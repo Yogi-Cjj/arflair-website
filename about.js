@@ -1,0 +1,2 @@
+const workshopViewer=document.querySelector('#workshop-viewer');
+document.querySelectorAll('[data-workshop-image]').forEach(button=>button.addEventListener('click',()=>{workshopViewer.querySelector('h2').textContent=button.dataset.workshopTitle;const image=workshopViewer.querySelector('img');image.src=button.dataset.workshopImage;image.alt=button.dataset.workshopTitle+' illustration';workshopViewer.showModal()}));
