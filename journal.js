@@ -44,4 +44,3 @@ if(grid){
  input.addEventListener('input',()=>{search=input.value;page=1;draw()});
  fetch('blog-data.json?v=unified-labels-1').then(r=>{if(!r.ok)throw new Error('Could not load journal');return r.json()}).then(data=>{stories=data;draw()}).catch(()=>{grid.innerHTML='<p class="journal-empty">The journal could not load. Please refresh to try again.</p>'});
 }
-
