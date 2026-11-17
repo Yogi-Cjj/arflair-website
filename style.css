@@ -161,3 +161,6 @@ footer .footer-directory{grid-template-columns:1.15fr 1fr 1fr .9fr;gap:clamp(28p
 
 /* Keep product card benefits to three lines at every card width. */
 .product-content .product-card-benefit{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden}
+
+/* Keep one semantic H1 across seasonal hero slides while preserving the display style. */
+.seasonal-hero-title{font:800 65px/.99 'Manrope',Arial;letter-spacing:-3.5px;margin:0 0 25px;color:#39204f}.seasonal-hero-title em{color:var(--purple);font-style:normal}@media(max-width:760px){.seasonal-hero-title{font-size:clamp(40px,11vw,58px);letter-spacing:-2px}}
