@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/resin-casting-powder.html",
+      "destination": "/collection-resin-casting-powder.html",
+      "permanent": true
+    }
+  ]
+}
