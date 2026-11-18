@@ -4,7 +4,8 @@ const cards=[...track.querySelectorAll('.client-review')];
 const prev=document.querySelector('.review-prev'),next=document.querySelector('.review-next');
 const step=()=>cards[0].getBoundingClientRect().width+parseFloat(getComputedStyle(track).columnGap||0);
 const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
-function update(){prev.disabled=track.scrollLeft<3;next.disabled=track.scrollLeft+track.clientWidth>=track.scrollWidth-3;}
+function update(){const left=track.scrollLeft,width=track.clientWidth,total=track.scrollWidth;prev.disabled=left<3;next.disabled=left+width>=total-3;}
+function init(){
 prev.addEventListener('click',()=>track.scrollBy({left:-step(),behavior:reduced()?'instant':'smooth'}));
 next.addEventListener('click',()=>track.scrollBy({left:step(),behavior:reduced()?'instant':'smooth'}));
 track.addEventListener('scroll',update,{passive:true});new ResizeObserver(update).observe(track);
@@ -14,4 +15,9 @@ track.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.button!==
 track.addEventListener('pointermove',e=>{if(pointer!==e.pointerId)return;const dx=e.clientX-startX;if(!dragging&&Math.abs(dx)>6){dragging=true;track.classList.add('dragging');track.setPointerCapture(pointer);}if(dragging){e.preventDefault();track.scrollLeft=startScroll-dx;}});
 function end(e){if(pointer!==e.pointerId)return;const didDrag=dragging;pointer=null;dragging=false;track.classList.remove('dragging');if(didDrag)track.scrollTo({left:Math.round(track.scrollLeft/step())*step(),behavior:reduced()?'instant':'smooth'});update();}
 track.addEventListener('pointerup',end);track.addEventListener('pointercancel',end);update();
+}
+if('IntersectionObserver' in window){
+ const observer=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){observer.disconnect();init();}},{rootMargin:'300px 0px'});
+ observer.observe(track);
+}else{window.addEventListener('load',init,{once:true});}
 })();
