@@ -6,3 +6,9 @@
 
 .finished-jewelry-cover img{object-position:center 38%}
 .story-cover.finished-jewelry-cover img{aspect-ratio:4/3;max-height:none;object-position:center top}
+
+.tech-comparison-table table{width:100%;min-width:560px;border-collapse:collapse;text-align:left;font-size:14px;line-height:1.6}
+.tech-comparison-table th,.tech-comparison-table td{padding:12px;border-bottom:1px solid #ebdff8;vertical-align:top}
+.tech-comparison-table th{background:#f4ecfc;color:#4a1d82}
+.tech-comparison-table a,.oem-spec-guide a{color:#7034ad;text-decoration:underline}
+.oem-spec-guide ol{padding-left:22px;line-height:1.7}
