@@ -174,3 +174,7 @@ footer .footer-directory{grid-template-columns:1.15fr 1fr 1fr .9fr;gap:clamp(28p
 #panel-christmas .hero-copy h2 em{color:#ffd28a}
 /* Overlay mobile carousel indicators on the bottom of the active image. */
 @media(max-width:740px){.seasonal-showcase{position:relative}.hero-progress{position:absolute;z-index:6;left:50%;right:auto;bottom:9px;transform:translateX(-50%);width:auto;padding:0;background:transparent}}
+
+/* Match all three homepage slides to one canvas. Keep the supplied 3:1 first image wide on large screens. */
+@media(min-width:741px){.seasonal-showcase{height:clamp(550px,33.333vw,840px)}.seasonal-showcase>.season-slide{height:100%;min-height:0}}
+@media(max-width:740px){.seasonal-showcase{height:clamp(700px,185vw,850px)}.seasonal-showcase>.season-slide{height:100%;min-height:0}#panel-resin{height:100%;min-height:0}#panel-resin .hero-copy{flex:0 0 auto}#panel-resin .hero-background{flex:1 1 0;min-height:0;height:0;aspect-ratio:auto;object-fit:cover;object-position:center}}
