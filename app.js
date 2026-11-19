@@ -30,14 +30,14 @@ let swipeStart=null;
 carousel.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')swipeStart={x:e.clientX,y:e.clientY}});
 carousel.addEventListener('pointerup',e=>{if(!swipeStart)return;const dx=e.clientX-swipeStart.x,dy=e.clientY-swipeStart.y;swipeStart=null;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy))moveSeason(seasonIndex+(dx<0?1:-1))});
 carousel.addEventListener('pointercancel',()=>{swipeStart=null});
-showSeason(Number(homeParams.get('season'))===1?1:0);syncSeasonTimer();
+const requestedSeason=homeParams.get('season');showSeason(requestedSeason==='0'?1:requestedSeason==='1'?2:0);syncSeasonTimer();
 
 // Compact header destinations and actions.
 const headerSearch=document.querySelector('#product-search-dialog');
 document.querySelector('#open-product-search').addEventListener('click',()=>{headerSearch.showModal();document.querySelector('#header-search-input').focus()});
 document.querySelector('#header-search-form').addEventListener('submit',e=>{e.preventDefault();query=document.querySelector('#header-search-input').value.trim().toLowerCase();currentFilter='all';render();headerSearch.close();document.querySelector('#collection').scrollIntoView({behavior:'smooth'})});
 document.querySelectorAll('[data-nav-dialog]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector('#'+a.dataset.navDialog+'-dialog').showModal()}));
-document.querySelectorAll('[data-view-season]').forEach(b=>b.addEventListener('click',()=>{document.querySelector('#new-arrivals-dialog').close();moveSeason(Number(b.dataset.viewSeason));document.querySelector('.seasonal-showcase').scrollIntoView({behavior:'smooth'})}));
+document.querySelectorAll('[data-view-season]').forEach(b=>b.addEventListener('click',()=>{document.querySelector('#new-arrivals-dialog').close();moveSeason(Number(b.dataset.viewSeason)+1);document.querySelector('.seasonal-showcase').scrollIntoView({behavior:'smooth'})}));
 document.querySelectorAll('[data-guide-inquiry]').forEach(b=>b.addEventListener('click',()=>{document.querySelector('#blog-dialog').close();openInquiry(b.dataset.guideInquiry)}));
 
 // Shop categories: pointer, keyboard and touch access.
