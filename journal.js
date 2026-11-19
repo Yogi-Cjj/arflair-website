@@ -46,5 +46,5 @@ if(grid){
  }
  filters.forEach(b=>b.addEventListener('click',()=>{category=b.dataset.journalCategory;page=1;draw()}));
  input.addEventListener('input',()=>{search=input.value;page=1;draw()});
- fetch('blog-data.json?v=unified-labels-1').then(r=>{if(!r.ok)throw new Error('Could not load journal');return r.json()}).then(data=>{stories=data;draw()}).catch(()=>{grid.innerHTML='<p class="journal-empty">The journal could not load. Please refresh to try again.</p>'});
+ fetch('blog-data.json?v=buyer-guide-20261119').then(r=>{if(!r.ok)throw new Error('Could not load journal');return r.json()}).then(data=>{stories=data;draw()}).catch(()=>{grid.innerHTML='<p class="journal-empty">The journal could not load. Please refresh to try again.</p>'});
 }
