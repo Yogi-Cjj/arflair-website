@@ -18,7 +18,7 @@ inquiryForm.addEventListener('submit',prepareWhatsAppInquiry);
 const carousel=document.querySelector('.seasonal-showcase');
 const seasonSlides=[...carousel.querySelectorAll('.season-slide')];
 let seasonIndex=0,seasonTimer=null,seasonPaused=matchMedia('(prefers-reduced-motion: reduce)').matches,seasonHover=false,seasonFocus=false;
-function showSeason(index){seasonIndex=(index+seasonSlides.length)%seasonSlides.length;seasonSlides.forEach((s,i)=>{s.hidden=i!==seasonIndex;s.classList.toggle('is-active',i===seasonIndex)});}
+function showSeason(index){seasonIndex=(index+seasonSlides.length)%seasonSlides.length;seasonSlides.forEach((s,i)=>{s.hidden=i!==seasonIndex;s.classList.toggle('is-active',i===seasonIndex)});document.querySelectorAll('[data-hero-slide]').forEach((button,i)=>{button.setAttribute('aria-selected',String(i===seasonIndex));button.classList.toggle('is-active',i===seasonIndex)});}
 function syncSeasonTimer(){clearInterval(seasonTimer);seasonTimer=null;if(!seasonPaused&&!seasonHover&&!seasonFocus&&!document.hidden)seasonTimer=setInterval(()=>showSeason(seasonIndex+1),5000);}
 function moveSeason(index){showSeason(index);syncSeasonTimer();}
 carousel.addEventListener('mouseenter',()=>{seasonHover=true;syncSeasonTimer()});
@@ -32,6 +32,7 @@ carousel.addEventListener('pointerup',e=>{if(!swipeStart)return;const dx=e.clien
 carousel.addEventListener('pointercancel',()=>{swipeStart=null});
 const requestedSeason=homeParams.get('season');showSeason(requestedSeason==='0'?1:requestedSeason==='1'?2:0);syncSeasonTimer();
 
+document.querySelectorAll('[data-hero-slide]').forEach(button=>button.addEventListener('click',()=>moveSeason(Number(button.dataset.heroSlide))));
 // Compact header destinations and actions.
 const headerSearch=document.querySelector('#product-search-dialog');
 document.querySelector('#open-product-search').addEventListener('click',()=>{headerSearch.showModal();document.querySelector('#header-search-input').focus()});
