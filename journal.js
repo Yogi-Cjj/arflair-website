@@ -35,10 +35,10 @@ if(grid){
  function draw(){
   const term=search.trim().toLowerCase();
   const filtered=stories.filter(p=>(category==='All stories'||p.category===category)&&(!term||(p.title+' '+p.intro+' '+p.category).toLowerCase().includes(term)));
-  const pages=Math.max(1,Math.ceil(filtered.length/6));page=Math.min(page,pages);
+  const pages=1;page=1;
   filters.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.journalCategory===category)));
   count.textContent=filtered.length+' '+(filtered.length===1?'story':'stories');
-  const selected=filtered.slice((page-1)*6,page*6);
+  const selected=filtered;
   grid.innerHTML=selected.length?selected.map(p=>`<article class="journal-card"><a class="journal-card-image" href="journal/${p.slug}.html" aria-label="Read ${escapeHTML(p.title)}"><img src="assets/${p.image}" alt="${escapeHTML(p.alt)}" loading="lazy"></a><div class="journal-card-copy"><p class="card-category">${escapeHTML(p.category)} <span>· ${p.minutes} min read</span></p><h3><a href="journal/${p.slug}.html">${escapeHTML(p.title)}</a></h3><p class="card-excerpt">${escapeHTML(p.intro)}</p><a class="journal-read" href="journal/${p.slug}.html">Read the story <span>↗</span></a></div></article>`).join(''):`<div class="journal-empty"><h3>No stories found.</h3><p>Try another topic or explore all our guides.</p><button class="button primary" id="reset-journal">Show all stories</button></div>`;
   pagination.innerHTML=pages>1?`<button data-page="${page-1}" ${page===1?'disabled':''} aria-label="Previous page">← Previous</button>`+Array.from({length:pages},(_,i)=>`<button data-page="${i+1}" ${page===i+1?'aria-current="page"':''} aria-label="Page ${i+1}">${i+1}</button>`).join('')+`<button data-page="${page+1}" ${page===pages?'disabled':''} aria-label="Next page">Next →</button>`:'';
   pagination.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>{page=Number(b.dataset.page);draw();document.querySelector('.library-top').scrollIntoView({behavior:'smooth',block:'start'})}));
@@ -47,5 +47,7 @@ if(grid){
  }
  filters.forEach(b=>b.addEventListener('click',()=>{category=b.dataset.journalCategory;page=1;draw()}));
  input.addEventListener('input',()=>{search=input.value;page=1;draw()});
- fetch('blog-data.json?v=buyer-guide-20261119').then(r=>{if(!r.ok)throw new Error('Could not load journal');return r.json()}).then(data=>{stories=data;draw()}).catch(()=>{grid.innerHTML='<p class="journal-empty">The journal could not load. Please refresh to try again.</p>'});
+ const embeddedData=document.querySelector('#journal-data');
+ if(embeddedData){try{stories=JSON.parse(embeddedData.textContent);draw()}catch{count.textContent='Browse all articles below.'}}
+ else fetch('blog-data.json?v=static-library-20261124').then(response=>{if(!response.ok)throw new Error('Could not load journal');return response.json()}).then(data=>{stories=data;draw()}).catch(()=>{count.textContent='Browse the available articles below.'});
 }
