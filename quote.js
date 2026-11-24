@@ -1,3 +1,4 @@
+(()=>{if(document.getElementById('arflair-analytics'))return;const tag=document.createElement('script');tag.id='arflair-analytics';tag.async=true;tag.src='/analytics.js?v=1';document.head.append(tag)})();
 const quoteForm=document.querySelector('#quote-request-form');
 const ready=document.querySelector('#quote-ready');
 const fields=quoteForm.elements;
