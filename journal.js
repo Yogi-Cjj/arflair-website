@@ -1,3 +1,4 @@
+(()=>{if(document.getElementById('arflair-analytics'))return;const tag=document.createElement('script');tag.id='arflair-analytics';tag.async=true;tag.src='/analytics.js?v=1';document.head.append(tag)})();
 const escapeHTML=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const params=new URLSearchParams(location.search);
 const menu=document.querySelector('.shop-menu');
