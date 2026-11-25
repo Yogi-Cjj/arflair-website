@@ -46,7 +46,7 @@
         'quote-request-form':'quote-ready'
       }[form.id];
       const preview=previewId?document.getElementById(previewId):null;
-      const ready=preview?!preview.hidden:!!document.querySelector('#form-status a[href^="https://wa.me/"]');
+      const ready=preview?!preview.hidden:!!document.querySelector('#form-status a[href^="https://wa.me/"], #form-status a[href^="https://api.whatsapp.com/send/"]');
       if(ready)track('inquiry_preview',{form_id:form.id});
     },0);
   },true);
