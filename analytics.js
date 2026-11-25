@@ -22,6 +22,12 @@
   function track(name,parameters={}){
     window.gtag('event',name,{send_to:measurementId,page_location:pageLocation,...parameters});
   }
+  const navigation=performance.getEntriesByType('navigation')[0];
+  if(location.pathname==='/quote.html'&&
+     new URL(location.href).searchParams.get('quote_source')==='plaster_guide'&&
+     (!navigation||navigation.type==='navigate')){
+    track('quote_arrival',{quote_source:'plaster_guide'});
+  }
   const formIds=new Set(['home-quote-form','product-quote-form','quote-request-form','inquiry-form']);
   const startedForms=new WeakSet();
   document.addEventListener('input',event=>{
@@ -44,7 +50,6 @@
       if(ready)track('inquiry_preview',{form_id:form.id});
     },0);
   },true);
-  let quoteNavigationPending=false;
   document.addEventListener('click',event=>{
     const link=event.target.closest('a[href]');
     if(link){
@@ -56,25 +61,7 @@
       }else if(target.protocol==='mailto:'){
         track('email_click',{placement});
       }else if(target.origin===location.origin&&target.pathname==='/quote.html'){
-        if(!link.hasAttribute('data-track-quote-navigation')||event.defaultPrevented||
-          event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||
-          (link.target&&link.target!=='_self')||link.hasAttribute('download')){
-          track('quote_click',{placement});
-          return;
-        }
-        event.preventDefault();
-        if(quoteNavigationPending)return;
-        quoteNavigationPending=true;
-        let navigated=false;
-        const navigate=()=>{
-          if(navigated)return;
-          navigated=true;
-          quoteNavigationPending=false;
-          clearTimeout(fallback);
-          location.assign(target.href);
-        };
-        const fallback=setTimeout(navigate,300);
-        track('quote_click',{placement,event_callback:navigate,event_timeout:300});
+        track('quote_click',{placement});
       }
       return;
     }
