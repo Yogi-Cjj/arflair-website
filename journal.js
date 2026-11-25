@@ -1,4 +1,4 @@
-(()=>{if(document.getElementById('arflair-analytics'))return;const tag=document.createElement('script');tag.id='arflair-analytics';tag.async=true;tag.src='/analytics.js?v=1';document.head.append(tag)})();
+(()=>{if(document.getElementById('arflair-analytics'))return;const tag=document.createElement('script');tag.id='arflair-analytics';tag.async=true;tag.src='/analytics.js?v=20261125-whatsapp-en';document.head.append(tag)})();
 const escapeHTML=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const params=new URLSearchParams(location.search);
 const menu=document.querySelector('.shop-menu');
@@ -24,7 +24,7 @@ document.querySelectorAll('[data-view-season]').forEach(b=>b.addEventListener('c
 const inquiryForm=document.querySelector('#inquiry-form');
 inquiryForm.querySelector('.form-intro').textContent='Prepare your project details, then review and send the message to our sales team in WhatsApp.';
 inquiryForm.querySelector('button[type="submit"]').textContent='Prepare WhatsApp inquiry →';
-function prepareWhatsAppInquiry(e){e.preventDefault();const data=new FormData(e.currentTarget);const brief='Hi ArFlair, I would like to discuss a project.\n\n'+[...data].map(([key,value])=>key.toUpperCase()+': '+String(value).trim()).join('\n')+'\n\nPlease advise on quotation and sample options.';const link=document.createElement('a');link.href='https://wa.me/8618022093149?text='+encodeURIComponent(brief);link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open WhatsApp →';const status=document.querySelector('#form-status');status.replaceChildren('Your message is ready. ',link,' Review it in WhatsApp and tap Send.');}
+function prepareWhatsAppInquiry(e){e.preventDefault();const data=new FormData(e.currentTarget);const brief='Hi ArFlair, I would like to discuss a project.\n\n'+[...data].map(([key,value])=>key.toUpperCase()+': '+String(value).trim()).join('\n')+'\n\nPlease advise on quotation and sample options.';const link=document.createElement('a');link.href='https://api.whatsapp.com/send/?phone=8618022093149&type=phone_number&app_absent=0&lang=en&text='+encodeURIComponent(brief);link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open WhatsApp →';const status=document.querySelector('#form-status');status.replaceChildren('Your message is ready. ',link,' Review it in WhatsApp and tap Send.');}
 inquiryForm.addEventListener('submit',prepareWhatsAppInquiry);
 const grid=document.querySelector('#journal-grid');
 if(grid){
