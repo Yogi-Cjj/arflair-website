@@ -2,7 +2,11 @@
 User-agent: *
 Allow: /
 
-# AI Crawlers for GEO & AI Search Visibility
+# AI search crawler
+User-agent: OAI-SearchBot
+Allow: /
+
+# Other AI crawlers
 User-agent: GPTBot
 Allow: /
 
