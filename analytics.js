@@ -22,11 +22,25 @@
   function track(name,parameters={}){
     window.gtag('event',name,{send_to:measurementId,page_location:pageLocation,...parameters});
   }
+  const quoteSources=[
+    {quote_source:'epoxy_collection',product_line:'epoxy_resin',path:'/collection-epoxy-resin.html'},
+    {quote_source:'epoxy_river_guide',product_line:'epoxy_resin',path:'/journal/river-table-resin-guide.html'},
+    {quote_source:'plaster_collection',product_line:'plaster_casting_powder',path:'/collection-resin-casting-powder.html'},
+    {quote_source:'plaster_guide',product_line:'plaster_casting_powder',path:'/journal/wholesale-plaster-casting-powder.html'}
+  ];
+  function quoteAttribution(){
+    if(location.pathname!=='/quote.html')return {};
+    const source=new URL(location.href).searchParams.get('quote_source');
+    const referrer=document.referrer?new URL(document.referrer):null;
+    const referrerPath=referrer?.origin===location.origin?referrer.pathname:'';
+    const match=quoteSources.find(entry=>entry.quote_source===source)||
+      quoteSources.find(entry=>entry.path===referrerPath);
+    return match?{quote_source:match.quote_source,product_line:match.product_line}:{};
+  }
+  const attribution=quoteAttribution();
   const navigation=performance.getEntriesByType('navigation')[0];
-  if(location.pathname==='/quote.html'&&
-     new URL(location.href).searchParams.get('quote_source')==='plaster_guide'&&
-     (!navigation||navigation.type==='navigate')){
-    track('quote_arrival',{quote_source:'plaster_guide'});
+  if(attribution.quote_source&&(!navigation||navigation.type==='navigate')){
+    track('quote_arrival',attribution);
   }
   const formIds=new Set(['home-quote-form','product-quote-form','quote-request-form','inquiry-form']);
   const startedForms=new WeakSet();
@@ -34,7 +48,7 @@
     const form=event.target.form;
     if(!form||!formIds.has(form.id)||startedForms.has(form))return;
     startedForms.add(form);
-    track('inquiry_start',{form_id:form.id});
+    track('inquiry_start',{form_id:form.id,...attribution});
   });
   document.addEventListener('submit',event=>{
     const form=event.target;
@@ -47,7 +61,7 @@
       }[form.id];
       const preview=previewId?document.getElementById(previewId):null;
       const ready=preview?!preview.hidden:!!document.querySelector('#form-status a[href^="https://wa.me/"], #form-status a[href^="https://api.whatsapp.com/send/"]');
-      if(ready)track('inquiry_preview',{form_id:form.id});
+      if(ready)track('inquiry_preview',{form_id:form.id,...attribution});
     },0);
   },true);
   document.addEventListener('click',event=>{
@@ -57,9 +71,9 @@
       try{target=new URL(link.href,location.href)}catch{return}
       const placement=link.closest('#product-quote-preview,#quote-ready,#home-quote-ready,#form-status')?'inquiry_preview':link.closest('header')?'header':link.closest('footer')?'footer':link.classList.contains('arflair-float')?'floating':'content';
       if((target.protocol==='https:'||target.protocol==='http:')&&['wa.me','api.whatsapp.com','web.whatsapp.com'].includes(target.hostname)){
-        track('whatsapp_click',{placement});
+        track('whatsapp_click',{placement,...(placement==='inquiry_preview'?attribution:{})});
       }else if(target.protocol==='mailto:'){
-        track('email_click',{placement});
+        track('email_click',{placement,...(placement==='inquiry_preview'?attribution:{})});
       }else if(target.origin===location.origin&&target.pathname==='/quote.html'){
         track('quote_click',{placement});
       }
